@@ -1,0 +1,13 @@
+// Example refactor of Completion Handler to Async/Await
+// Source: Swift Concurrency Roadmap (https://forums.swift.org/t/swift-concurrency-roadmap/41611)
+internal func refreshPlayers(completion: (() -> Void)? = nil) {
+    refreshQueue.async {
+        self.gameSession.allPlayers { players in
+            self.players = players.map(\.nickname)
+            completion?()
+        }
+    }
+}
+internal func refreshPlayers() async {
+  players = await gameSession.allPlayers().map(\.nickname)
+}
